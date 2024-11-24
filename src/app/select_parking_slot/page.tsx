@@ -8,56 +8,39 @@ import axios from 'axios';
 import ConfirmReservationModel from '@/components/confirmReservationModel';
 import { VehicleDataInterface } from '@/interfaces/VehicleDataInterface';
 import { SpotDataInterface } from '@/interfaces/SpotDataInterface';
-
+import { fetchSpots } from './fetchSpots';
+import { useVehicleContext } from '@/contexts/Vehicle/UseVehicleContext';
   
 
 export default function SelectParkingSlot() {
   const [spots, setSpots] = useState<SpotDataInterface[]>([]);
-  const [vehicleDetail, setVehicleDetail] = useState<VehicleDataInterface>();
+  const {vehicleData} = useVehicleContext();
   const [selectedSlot, setSelectedSlot] = useState<SpotDataInterface>();
   const [selectedSpotDetail, setSelectedSpotDetail] = useState<SpotDataInterface | undefined>();
-  const [error , setError] = useState();
+  const [error , setError] = useState<string | null>(null);
   const [openModal , setOpenModal] = useState(false);
+ 
+
 
 
   useEffect(() => {
-    const fetchSpots = () => {
-      axios.get('http://localhost:3000/api/v1/parking_spots_by_lotId/3', {
-        headers : {
-          "Content-Type" : "application/json",
-          "Accept" : "application/json"
-        }
-      })
-      .then(
-        (response => {
-          if(response.status === 200){
-            console.log(response);
-            setSpots(response.data);
-          }
-        })
-      )
-  
-      .catch(error => {
-        console.log(error);
-        setError(error);
-      })
+  const getParkingSpots = async() => {
+    try{
+      const data = await fetchSpots();
+      console.log(data as SpotDataInterface);
+      setSpots(data);
     }
-     fetchSpots();
+    catch(error){
+      setError('Failed to fetch parking spots');
+    }
+  }
+
+  getParkingSpots();
+    
   },[] )
 
-
-
-  useEffect(() => {
-    const vehicleData = localStorage.getItem("vehicleData");
-    if(vehicleData){
-      console.log(JSON.parse(vehicleData));
-      setVehicleDetail(JSON.parse(vehicleData));
-    }
-  }, [])
-
-
-
-  const handleSelectSlot = (spot : SpotDataInterface ) => {
+ 
+const handleSelectSlot = (spot : SpotDataInterface ) => {
     setSelectedSlot(spot);
   };
 
@@ -82,6 +65,14 @@ export default function SelectParkingSlot() {
     setOpenModal(false);
    }
  
+   if(error){
+    return <div>error</div>
+  }
+
+  if(!spots.length){
+    return <div>Loading ...</div>
+  }
+
 
   return (
     <Layout>
@@ -122,9 +113,9 @@ export default function SelectParkingSlot() {
     </div>
 
     {
-      selectedSpotDetail && vehicleDetail &&
+      selectedSpotDetail && 
       <div className='text-center'>
-      <ConfirmReservationModel vehicle = {vehicleDetail} spot = {selectedSpotDetail} closeModal = {handleCloseModal} openModal= {openModal}/>
+      <ConfirmReservationModel vehicle = {vehicleData} spot = {selectedSpotDetail} closeModal = {handleCloseModal} openModal= {openModal}/>
      </div>
     }
     

@@ -1,3 +1,4 @@
+import { VehicleApiInterface } from "./VehicleApiInterface";
 
 
 export interface VehicleDataInterface{
@@ -7,6 +8,19 @@ export interface VehicleDataInterface{
   vehicle_reg: string | null;     // Registration number of the vehicle
   vehicle_type: string | null;    // Type classification of the vehicle (e.g., "M1")
   vehicle_year: string | null;
+}
+
+
+
+export const mapApiToVehicleData = (apiData : VehicleApiInterface) => {
+    return {
+      entry_time: null,
+      vehicle_color: apiData.colour,
+      vehicle_make: apiData.make,
+      vehicle_reg: apiData.registrationNumber,
+      vehicle_type: apiData.typeApproval,
+      vehicle_year: apiData.yearOfManufacture,
+    }
 }
 
 

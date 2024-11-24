@@ -20,6 +20,7 @@ const [error, setError] = useState();
 
 
 function onSubmit(e: React.MouseEvent<HTMLButtonElement>){
+  console.log(vehicle);
   e.preventDefault();
    axios.post('http://localhost:3000/api/v1/entry_vehicle', {vehicleDetail: vehicle, spot: spot}, {
         headers : {
