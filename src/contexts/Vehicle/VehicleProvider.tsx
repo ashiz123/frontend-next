@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { VehicleContext } from "./VehicleContext";
 import { VehicleDataInterface } from "@/interfaces/VehicleDataInterface";
-import { VehicleApiInterface } from "@/interfaces/VehicleApiInterface";
+// import { VehicleApiInterface } from "@/interfaces/VehicleApiInterface";
 
 
 

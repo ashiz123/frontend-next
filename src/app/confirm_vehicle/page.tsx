@@ -17,7 +17,7 @@ export default function ConfirmVehicle() {
     const [parking, setParking] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const formattedDate = useMemo(() => moment().format('YYYY-MM-DD HH:mm:ss'), []);
+    const formattedEntryTime = useMemo(() => moment().format('YYYY-MM-DD HH:mm:ss'), []);
   
    
     //use Memo for better performance
@@ -27,8 +27,8 @@ export default function ConfirmVehicle() {
       vehicle_year: vehicleData.vehicle_year,
       vehicle_color: vehicleData.vehicle_color,
       vehicle_type: vehicleData.vehicle_type,
-      entry_time: formattedDate
-    }), [vehicleData,formattedDate])
+      entry_time: formattedEntryTime
+    }), [vehicleData,formattedEntryTime])
 
     useEffect(() => {
       const getVehicleStatus = async(vehicle: VehicleDataInterface) =>{
@@ -48,13 +48,14 @@ export default function ConfirmVehicle() {
       }
     }
 
-    getVehicleStatus(vehicle);
-    }, [vehicle])
+      getVehicleStatus(vehicle);
+    }, [vehicle.vehicle_reg])
 
  
+    console.log(loading);
   
     function handleConfirm(){
-     const targetRoute = parking ? '/vehicle_parking' : '/select_parking_slot';
+     const targetRoute = parking ? '/parking_time' : '/select_parking_slot';
      router.push(targetRoute);
     }
 

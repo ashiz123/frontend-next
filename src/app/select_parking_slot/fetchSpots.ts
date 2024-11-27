@@ -3,7 +3,7 @@ import axios from "axios";
 export const fetchSpots = async() => {
     try{
         // await new Promise((resolve) => setTimeout(resolve, 20000));
-        const response = await axios.get('http://localhost:3000/api/v1/parking_spots_by_lotId/3', {
+        const response = await axios.get('http://localhost:3000/api/v1/parking_spots_by_lotId/1', {
             headers : {
               "Content-Type" : "application/json",
               "Accept" : "application/json"

@@ -1,8 +1,8 @@
-import React, {useState, useEffect, FormEvent} from 'react'
+import React, {useState } from 'react'
 import { VehicleDataInterface } from '@/interfaces/VehicleDataInterface';
 import { SpotDataInterface } from '@/interfaces/SpotDataInterface';
 import axios from 'axios';
-import {useRouter, useSearchParams} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 
 interface ConfirmReservationModelProps{
@@ -17,11 +17,13 @@ const ConfirmReservationModel: React.FC<ConfirmReservationModelProps> = ({vehicl
 
 const router = useRouter();
 const [error, setError] = useState();
+console.log(vehicle);
 
 
 function onSubmit(e: React.MouseEvent<HTMLButtonElement>){
-  console.log(vehicle);
+ 
   e.preventDefault();
+  console.log(vehicle);
    axios.post('http://localhost:3000/api/v1/entry_vehicle', {vehicleDetail: vehicle, spot: spot}, {
         headers : {
           'Content-Type' : 'application/json'
@@ -29,8 +31,7 @@ function onSubmit(e: React.MouseEvent<HTMLButtonElement>){
       })
       .then(response => {
         if(response.status === 200){
-          localStorage.removeItem('vehicleData');
-          router.push('/successParking');
+          router.push('/thankyou_page');
         }
       })
       .catch(
@@ -43,8 +44,7 @@ function onSubmit(e: React.MouseEvent<HTMLButtonElement>){
 
 
 function onCancel(){
-  localStorage.removeItem('vehicleData');
-  router.push('/');
+   router.push('/');
 }
 
 

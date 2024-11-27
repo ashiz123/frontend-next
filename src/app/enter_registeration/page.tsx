@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useVehicleContext } from '@/contexts/Vehicle/UseVehicleContext';
-import { VehicleDataInterface , mapApiToVehicleData } from '@/interfaces/VehicleDataInterface';
+import { mapApiToVehicleData } from '@/interfaces/VehicleDataInterface';
 
 export default function Enter_registeration() {
 
@@ -20,7 +20,7 @@ export default function Enter_registeration() {
     // });
     const [registrationNumber , setRegistrationNumber] = useState<string>('');
     const {setVehicleData} = useVehicleContext();
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     const router = useRouter();
 
   const handleSubmit = async(event : FormEvent<HTMLFormElement>) => {
@@ -32,7 +32,7 @@ export default function Enter_registeration() {
       const data = mapApiToVehicleData(response.data);
       setVehicleData(data);
       // router.push(`/confirmVehicle?color=${data.colour}&make=${data.make}&year=${data.yearOfManufacture}&type=${data.typeApproval}&reg=${registrationNumber}`);
-      router.push('/confirmVehicle')
+      router.push('/confirm_vehicle')
     
 
 

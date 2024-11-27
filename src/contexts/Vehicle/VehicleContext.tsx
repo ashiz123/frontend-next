@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { VehicleDataInterface } from "@/interfaces/VehicleDataInterface";
-import { VehicleApiInterface } from "@/interfaces/VehicleApiInterface";
+
 
 export interface VehicleContextType {
     vehicleData: VehicleDataInterface ;

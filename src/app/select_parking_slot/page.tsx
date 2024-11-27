@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 
 import Layout from '@/components/layout'
 import axios from 'axios';
-import ConfirmReservationModel from '@/components/confirmReservationModel';
-import { VehicleDataInterface } from '@/interfaces/VehicleDataInterface';
+import ConfirmReservationModel from './confirmReservationModel';
 import { SpotDataInterface } from '@/interfaces/SpotDataInterface';
 import { fetchSpots } from './fetchSpots';
 import { useVehicleContext } from '@/contexts/Vehicle/UseVehicleContext';
@@ -31,6 +30,7 @@ export default function SelectParkingSlot() {
       setSpots(data);
     }
     catch(error){
+      console.log(error);
       setError('Failed to fetch parking spots');
     }
   }
