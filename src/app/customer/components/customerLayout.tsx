@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './header'; // Make sure the import path is correct
 import Footer from './footer'; // Make sure the import path is correct
-import { VehicleProvider } from '../Vehicle/VehicleProvider';
+import { VehicleProvider } from '../VehicleContext/VehicleProvider';
 
 
 const CustomerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

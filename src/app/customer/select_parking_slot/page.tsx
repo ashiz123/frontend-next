@@ -7,7 +7,7 @@ import axios from 'axios';
 import ConfirmReservationModel from './confirmReservationModel';
 import { SpotDataInterface } from '@/app/customer/interfaces/SpotDataInterface';
 import { fetchSpots } from './fetchSpots';
-import { useVehicleContext } from '@/app/customer/Vehicle/UseVehicleContext';
+import { useVehicleContext } from '@/app/customer/VehicleContext/UseVehicleContext';
   
 
 export default function SelectParkingSlot() {

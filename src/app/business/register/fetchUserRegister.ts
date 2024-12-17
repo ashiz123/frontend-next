@@ -12,14 +12,14 @@ const {firstname, lastname, email, password,} = formData;
         });
     
         if(response.status === 200){
-            console.log(response.data);
-            return response.data;
+            return response;
             }
+
 
         throw new Error('Posting data unsuccessful');
     }
     catch(error){
-        console.log('error', error);
+        console.log('error is', error);
         throw error;
     }
    

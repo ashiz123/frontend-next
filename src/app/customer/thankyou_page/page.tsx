@@ -1,7 +1,7 @@
 'use client';
 import Layout from '@/app/customer/components/customerLayout'
 import React from 'react'
-import { useVehicleContext } from '@/app/customer/Vehicle/UseVehicleContext';
+import { useVehicleContext } from '@/app/customer/VehicleContext/UseVehicleContext';
 
 export default function ThankyouPage() {
 const {vehicleData} = useVehicleContext();

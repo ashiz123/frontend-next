@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { fetchParkingTime } from './fetchParkingTime';
 import TimeDisplay from './TimeDisplay';
-import { useVehicleContext } from '@/app/customer/Vehicle/UseVehicleContext';
+import { useVehicleContext } from '@/app/customer/VehicleContext/UseVehicleContext';
 import {parkingSpentTime} from './parkingSpentTime';
 import AmountDisplay from './AmountDisplay';
 import Payment from '../payment/page';

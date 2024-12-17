@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { VehicleDataInterface } from '@/app/customer/interfaces/VehicleDataInterface';
 import VehicleDetails from '@/app/customer/components/vehicleDetails';
-import { useVehicleContext } from '@/app/customer/Vehicle/UseVehicleContext';
+import { useVehicleContext } from '@/app/customer/VehicleContext/UseVehicleContext';
 import { fetchCheckVehicleStatus } from './fetchVehicleStatus'; 
 import ErrorMessage from '@/app/customer/components/error';
 

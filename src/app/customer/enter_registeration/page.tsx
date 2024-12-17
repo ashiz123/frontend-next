@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useVehicleContext } from '@/app/customer/Vehicle/UseVehicleContext';
+import { useVehicleContext } from '@/app/customer/VehicleContext/UseVehicleContext';
 import { mapApiToVehicleData } from '@/app/customer/interfaces/VehicleDataInterface';
 import { fetchVehicleFromDvla } from './fetchVehicleFromDVLA';
 
