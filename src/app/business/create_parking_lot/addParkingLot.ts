@@ -1,6 +1,6 @@
 // import axios from "axios"
 import { ParkingLotFormData } from "./type";
-import axiosClient from "./axiosClient";
+import axiosClient from "../components/axiosClient";
 
 
 export const addParkingLot = async(user_id : number, parkingLot: ParkingLotFormData) => {
@@ -29,7 +29,7 @@ export const addParkingLot = async(user_id : number, parkingLot: ParkingLotFormD
 
     try{
         const response = await axiosClient.post(
-            'http://localhost:3000/api/v1/parking_lot/create',data,
+            'http://localhost:3000/api/v1/parking_lots',data,
             {
               headers,
             }

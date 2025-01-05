@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 
-export const checkUserLoggedIn = () => {
+export const CheckUserLoggedIn = () => {
     const router  = useRouter();
 
     useEffect(() => {

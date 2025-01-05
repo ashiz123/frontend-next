@@ -5,8 +5,8 @@ import {FormData, Error, initialStateError, initialStateForm} from './type';
 import PrimaryBtn from '../components/BusinessButton';
 import BusinessError from '../components/BusinessError';
 import { fetchUserLogin } from './fetchUserLogin';
-import { useUserContext } from '../contexts/userContext';
-import { usePathname, useRouter } from 'next/navigation';
+import { useUserContext } from '../contexts/user/userContext';
+import {  useRouter } from 'next/navigation';
 import withGuest from '@/app/hoc/withGuest';
 import Link from 'next/link';
 

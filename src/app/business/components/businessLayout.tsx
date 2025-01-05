@@ -1,18 +1,20 @@
-import React from 'react'
-import BusinessHeader from './businessHeader'
-import BusinessFooter from './businessFooter'
-import UserProvider from '../contexts/userProvider'
+import React from "react";
+import BusinessHeader from "./businessHeader";
+import BusinessFooter from "./businessFooter";
+import UserProvider from "../contexts/user/userProvider";
 
-const BusinessLayout : React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const BusinessLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <>
-    <UserProvider>
-      <BusinessHeader />
-      <main className='container mx-auto'>{children}</main>
-      <BusinessFooter />
-    </UserProvider>
+      <UserProvider>
+        <BusinessHeader />
+        <main className="container mx-auto">{children}</main>
+        <BusinessFooter />
+      </UserProvider>
     </>
-  )
-}
+  );
+};
 
-export default BusinessLayout
+export default BusinessLayout;

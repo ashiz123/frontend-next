@@ -1,6 +1,6 @@
 
 import { FormData } from "./type";
-import axiosClient from "../create_parking_lot/axiosClient"; //withCredantials
+import axiosClient from "../components/axiosClient"; //withCredantials
 
 
 

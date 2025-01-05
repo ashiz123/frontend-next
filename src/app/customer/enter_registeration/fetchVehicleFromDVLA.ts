@@ -7,7 +7,8 @@ export const fetchVehicleFromDvla = async(registrationNumber : string) => {
     try{
         const response = await axios.post('/api/v1/get_vehicle_reg', {registrationNumber} , {
             headers : {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Accept' : 'application/json'
             }
         });
         console.log(response);
@@ -16,7 +17,7 @@ export const fetchVehicleFromDvla = async(registrationNumber : string) => {
     }
 
     catch(error){
-        console.log(error);
+        console.log('error registeration', error);
         throw error;
     }
     

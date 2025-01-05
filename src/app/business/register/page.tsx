@@ -8,6 +8,7 @@ import BusinessError from '../components/BusinessError';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 import withGuest from '@/app/hoc/withGuest';
+import Link from 'next/link';
 
 
 
@@ -102,6 +103,18 @@ const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     </div>
    
     <PrimaryBtn title="Register" />
+
+    <div className="text-center p-3">
+          <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+            <Link
+              href="/business/login"
+              className="font-medium text-blue-500 hover:underline"
+            >
+              Login here
+            </Link>
+          </p>
+        </div>
 
     
     

@@ -1,8 +1,8 @@
 // hoc/withAuth.tsx
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserDataInterface } from '../business/contexts/UserDataInterface';
-import { useUserContext } from '../business/contexts/userContext';
+import { UserDataInterface } from '../business/contexts/user/UserDataInterface';
+import { useUserContext } from '../business/contexts/user/userContext';
 import { usePathname } from 'next/navigation';
 
 type WithAuthProps = {
@@ -20,7 +20,7 @@ const withAuth = <P extends WithAuthProps> (WrappedComponent: React.ComponentTyp
     const router = useRouter();
     const pathname = usePathname();
 
-    console.log(pathname);
+
 
 
     //important way 
