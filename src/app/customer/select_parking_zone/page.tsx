@@ -4,11 +4,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import ConfirmReservationModel from "./confirmReservationModel";
 import { useVehicleContext } from "@/app/customer/VehicleContext/UseVehicleContext";
-import { fetchLotsByLotId } from "./fetchLotSections";
+import { fetchLotsOrSectionsByLotId } from "./fetchLotSections";
 import { ParkingResult } from "./type";
 
 import { fetchReservation } from "./fetchReservation";
 import { useRouter } from "next/navigation";
+import { getLotId } from "./getLotIId";
 
 export default function SelectParkingSlot() {
   const { vehicleData } = useVehicleContext();
@@ -18,24 +19,30 @@ export default function SelectParkingSlot() {
   const [selectedOption, setSelectedOption] = useState<ParkingResult>();
   const [error, setError] = useState<string | null>(null);
 
-  const parking_lot_id = 2;
+  // const parking_lot_id = 3;
 
   useEffect(() => {
-    const getParkingSpots = async (parking_lot_id: number) => {
+    const fetchData = async () => {
       try {
-        const data = await fetchLotsByLotId(parking_lot_id);
-        console.log(data);
-        if (data?.length === 0) {
-          setError("No any area found to park");
+        const response = await getLotId();
+        if (!response.data || response.data.length === 0) {
+          throw new Error("No lot ID found");
         }
-        setSections(data);
+        const lotId = response.data[0].id;
+        const data = await fetchLotsOrSectionsByLotId(lotId);
+
+        if (!data || data.length === 0) {
+          setError("No area found to park");
+        } else {
+          setSections(data);
+        }
       } catch (error) {
-        console.log(error);
-        setError("Failed to fetch parking spots");
+        console.error("Error fetching data:", error);
+        setError("Failed to fetch parking data");
       }
     };
 
-    getParkingSpots(parking_lot_id);
+    fetchData();
   }, []);
 
   const handleSelectSection = (section: ParkingResult) => {

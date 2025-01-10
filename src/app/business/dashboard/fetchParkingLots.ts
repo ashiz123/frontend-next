@@ -1,14 +1,15 @@
 
 
 import axiosClient from "../components/axiosClient";
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
 
 
-const fetchParkingLots = async(userId: number) => {
+const fetchParkingLots = async() => {
 
     try{
-        const response = await axiosClient.get(`http://localhost:3000/api/v1/parking_lots/${userId}`,{
+        const response = await axiosClient.get(`${apiBaseUrl}/parking_lots_by_auth_user`,{
             headers : {
                 'Accept' : 'application/json',
                 'Content-Type' : 'application/json'

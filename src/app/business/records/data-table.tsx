@@ -58,13 +58,16 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter Vehicle Reg..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("vehicle_reg")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("vehicle_reg")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -115,6 +118,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"

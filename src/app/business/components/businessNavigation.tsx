@@ -48,17 +48,17 @@ export default function BusinessNavigation() {
                 </Link>
 
                 <Link
-                  href="/business/settings"
-                  className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-                >
-                  Settings
-                </Link>
-
-                <Link
                   href="/business/records"
                   className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
                 >
                   Records
+                </Link>
+
+                <Link
+                  href="/business/settings"
+                  className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                >
+                  Settings
                 </Link>
               </>
             ) : (

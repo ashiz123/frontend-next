@@ -10,7 +10,7 @@ const axiosConfig = {
 
 
 
- export const fetchLotsByLotId = async(lot_id: number) => {
+ export const fetchLotsOrSectionsByLotId = async(lot_id: number) => {
 
   try{
     const response = await axios.get(`/api/v1/parking_lot/${lot_id}`, axiosConfig);

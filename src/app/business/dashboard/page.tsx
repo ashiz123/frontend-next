@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import withAuth from "@/app/hoc/withAuth";
 import { UserDataInterface } from "../contexts/user/UserDataInterface";
@@ -11,25 +11,22 @@ interface dashboardProps {
   user: UserDataInterface | null;
 }
 
-const Dashboard: React.FC<dashboardProps> = ({ user }) => {
+const Dashboard: React.FC<dashboardProps> = () => {
   const router = useRouter();
   const { lots, setLots } = useLotsContext();
 
   useEffect(() => {
     const getAllParkingLots = async () => {
       try {
-        if (user) {
-          console.log(user);
-          const data = await fetchParkingLots(user.id);
-          setLots(data);
-        }
+        const data = await fetchParkingLots();
+        setLots(data);
       } catch (error) {
         console.log(error);
       }
     };
 
     getAllParkingLots();
-  }, [user]);
+  }, []);
 
   const addParkingLot = () => {
     router.push("/business/create_parking_lot");
@@ -47,6 +44,11 @@ const Dashboard: React.FC<dashboardProps> = ({ user }) => {
       <main className="container mx-auto px-4 py-6">
         <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
           <div className="bg-white p-4 rounded-lg shadow">
+            <h2 className="text-lg font-semibold">Activated Lot</h2>
+            <p className="text-3xl font-bold text-business mt-2">245</p>
+          </div>
+
+          <div className="bg-white p-4 rounded-lg shadow">
             {/* add logo here */}
             <h2 className="text-lg font-semibold">Total Parking Lots</h2>
             <p className="text-3xl font-bold  mt-2 text-business">12</p>
@@ -55,11 +57,6 @@ const Dashboard: React.FC<dashboardProps> = ({ user }) => {
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-lg font-semibold">Total Spaces</h2>
             <p className="text-3xl font-bold text-business mt-2">350</p>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="text-lg font-semibold">Occupied Spaces</h2>
-            <p className="text-3xl font-bold text-business mt-2">245</p>
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow">
