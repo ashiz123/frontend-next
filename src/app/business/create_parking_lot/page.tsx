@@ -1,6 +1,6 @@
 "use client";
 import { useUserContext } from "../contexts/user/userContext";
-import withAuth from "@/app/hoc/withAuth";
+import withAuth from "@/app/business/hoc/withAuth";
 import { ChangeEvent, useState } from "react";
 import {
   FormError,
@@ -10,22 +10,20 @@ import {
 import { addParkingLot } from "./addParkingLot";
 import BusinessSuccessAlert from "../components/BusinessSuccessAlert";
 import { useRouter } from "next/navigation";
+import BusinessError from "../components/BusinessError";
 
 const Page = () => {
   const [formData, setFormData] = useState<ParkingLotFormData>(
     InitialCreateParkingForm
   );
-  const { user } = useUserContext();
-  const [validationError, setValidationError] = useState<FormError | null>(
-    null
-  );
-  const router = useRouter();
-
   const [status, setStatus] = useState({
     submitted: false,
     error: false,
     disable: false,
   });
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useUserContext();
+  const router = useRouter();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -42,21 +40,26 @@ const Page = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      if (user) {
-        const response = await addParkingLot(user.id, formData);
-        if (response?.status === 200) {
-          setStatus({ submitted: true, error: false, disable: true });
-          setFormData(InitialCreateParkingForm);
-          router.push("/business/dashboard");
-        } else {
-          setStatus({ submitted: false, error: true, disable: false });
+    console.log(formData);
+    if (formData.login_pin === formData.confirm_login_pin) {
+      try {
+        if (user) {
+          const response = await addParkingLot(user.id, formData);
+          if (response?.status === 200) {
+            setStatus({ submitted: true, error: false, disable: true });
+            setFormData(InitialCreateParkingForm);
+            router.push("/business/dashboard");
+          } else {
+            setStatus({ submitted: false, error: true, disable: false });
+          }
         }
+      } catch (error) {
+        console.log(error);
+        setStatus({ submitted: false, error: true, disable: false });
       }
-    } catch (error) {
-      console.log(error);
+    } else {
       setStatus({ submitted: false, error: true, disable: false });
+      setError("Pin confirmation does not match. please reset");
     }
   };
 
@@ -65,6 +68,8 @@ const Page = () => {
       <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center p-5">
         Create Parking Lot
       </h2>
+      {error && <BusinessError error={error} />}
+
       <form className="mt-5" onSubmit={handleSubmit}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
@@ -81,6 +86,46 @@ const Page = () => {
                     type="text"
                     name="name"
                     id="name"
+                    autoComplete="name"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-500 sm:text-sm/6"
+                    required
+                  />
+                </div>
+              </div>
+              <br />
+
+              <div className="sm:col-span-3">
+                <h2 className="text-base/7 font-semibold text-gray-900">
+                  <label htmlFor="name">Set login pin</label>
+                </h2>
+                <div className="mt-2">
+                  <input
+                    placeholder="Enter login pin"
+                    value={formData.login_pin}
+                    onChange={handleChange}
+                    type="password"
+                    name="login_pin"
+                    id="name"
+                    autoComplete="name"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-500 sm:text-sm/6"
+                    required
+                  />
+                </div>
+              </div>
+              <br />
+
+              <div className="sm:col-span-3">
+                <h2 className="text-base/7 font-semibold text-gray-900">
+                  <label htmlFor="name">Confirm login pin</label>
+                </h2>
+                <div className="mt-2">
+                  <input
+                    placeholder="Confirm login pin"
+                    value={formData.confirm_login_pin}
+                    onChange={handleChange}
+                    type="password"
+                    name="confirm_login_pin"
+                    id="confirm_login_pin"
                     autoComplete="name"
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-teal-500 sm:text-sm/6"
                     required
@@ -397,7 +442,11 @@ const Page = () => {
           {status.submitted && (
             <BusinessSuccessAlert msg="Parking lot created successfully" />
           )}
-          {status.error && <p>Oops! Something went wrong. Please try again.</p>}
+          {status.error && (
+            <BusinessError
+              error={"Oops! Something went wrong. Please try again."}
+            />
+          )}
 
           <button
             type="button"

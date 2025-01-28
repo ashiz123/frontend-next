@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useVehicleContext } from "@/app/customer/VehicleContext/UseVehicleContext";
-import { mapApiToVehicleData } from "@/app/customer/interfaces/VehicleDataInterface";
-import { fetchVehicleFromDvla } from "./fetchVehicleFromDVLA";
+// import { mapApiToVehicleData } from "@/app/customer/interfaces/VehicleDataInterface";
+// import { fetchVehicleFromDvla } from "./fetchVehicleFromDVLA";
 
 function Enter_registeration() {
   const [registrationNumber, setRegistrationNumber] = useState<string>("");
-  const { setVehicleData } = useVehicleContext();
+  const { setVehicleInfo } = useVehicleContext();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,9 +17,7 @@ function Enter_registeration() {
     event.preventDefault();
 
     try {
-      const dvlaApi = await fetchVehicleFromDvla(registrationNumber);
-      const data = mapApiToVehicleData(dvlaApi);
-      setVehicleData(data);
+      await setVehicleInfo(registrationNumber);
       setLoading(true);
       router.push("customer/confirm_vehicle");
     } catch (error) {

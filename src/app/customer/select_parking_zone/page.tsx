@@ -4,37 +4,57 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import ConfirmReservationModel from "./confirmReservationModel";
 import { useVehicleContext } from "@/app/customer/VehicleContext/UseVehicleContext";
-import { fetchLotsOrSectionsByLotId } from "./fetchLotSections";
+import { fetchSections } from "./fetchLotSections";
 import { ParkingResult } from "./type";
 
 import { fetchReservation } from "./fetchReservation";
 import { useRouter } from "next/navigation";
-import { getLotId } from "./getLotIId";
+import withLotAuth from "@/app/parkingLots/hoc/withLotAuth";
+import { ParkingLot } from "@/app/types/parkingLot";
 
-export default function SelectParkingSlot() {
-  const { vehicleData } = useVehicleContext();
+const SelectParkingSlot = ({ lot }: { lot: ParkingLot }) => {
+  const { vehicleData, setVehicleInfo } = useVehicleContext();
   const router = useRouter();
 
   const [sections, setSections] = useState<ParkingResult[] | undefined>([]);
   const [selectedOption, setSelectedOption] = useState<ParkingResult>();
   const [error, setError] = useState<string | null>(null);
 
-  // const parking_lot_id = 3;
+  const registration_number = localStorage.getItem("vehicle_reg");
+
+  console.log(lot?.grouped);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getLotId();
-        if (!response.data || response.data.length === 0) {
-          throw new Error("No lot ID found");
-        }
-        const lotId = response.data[0].id;
-        const data = await fetchLotsOrSectionsByLotId(lotId);
+    const getVehicleData = async () => {
+      if (!registration_number) {
+        setError("No registration number found in localStorage");
+        return;
+      }
 
-        if (!data || data.length === 0) {
-          setError("No area found to park");
-        } else {
-          setSections(data);
+      try {
+        setVehicleInfo(registration_number);
+      } catch (error) {
+        console.error("Failed to fetch vehicle data:", error);
+        setError("Failed to fetch vehicle data");
+      }
+    };
+
+    if (registration_number) {
+      getVehicleData();
+    }
+  }, [registration_number]);
+
+  useEffect(() => {
+    const fetchLotSections = async () => {
+      try {
+        if (lot) {
+          const data = await fetchSections(lot.id);
+          console.log(data);
+          if (!data || data.length === 0) {
+            setError("No sections created"); //automatically add vehicle to add
+          } else {
+            setSections(data);
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,20 +62,29 @@ export default function SelectParkingSlot() {
       }
     };
 
-    fetchData();
-  }, []);
+    fetchLotSections();
+  }, [lot?.id]);
 
   const handleSelectSection = (section: ParkingResult) => {
+    console.log(section.id);
     setSelectedOption(section);
   };
 
-  const handleConfirmSelection = async (option: ParkingResult) => {
+  console.log(selectedOption);
+
+  const handleConfirmSelection = async () => {
     try {
-      const data = await fetchReservation(vehicleData, option);
-      if (data?.status === 200) {
-        router.push("/customer/thankyou_page");
+      if (selectedOption) {
+        const data = await fetchReservation(
+          vehicleData,
+          lot.id,
+          selectedOption.id
+        );
+        console.log(data);
+        if (data) {
+          router.push("/customer/thankyou_page");
+        }
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
       setError("Some issue with fetching");
@@ -92,7 +121,9 @@ export default function SelectParkingSlot() {
                 className="bg-blue-600 text-white rounded-lg p-4 shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 focus:outline-none"
                 onClick={() => handleSelectSection(section)}
               >
-                <h2 className="text-lg font-semibold mb-2">{section.name}</h2>
+                <h2 className="text-lg font-semibold mb-2">
+                  {section.section_name}
+                </h2>
                 <p className="text-sm">
                   Vehicle allowed:{" "}
                   <span className="font-medium">
@@ -113,13 +144,13 @@ export default function SelectParkingSlot() {
                 <p className="text-xl text-green-500 mb-4">
                   You have selected Parking Slot{" "}
                   <span className="text-blue-500">
-                    ({selectedOption.name} - {selectedOption.vehicle_allow_type}
-                    )
+                    ({selectedOption.section_name} -{" "}
+                    {selectedOption.vehicle_allow_type})
                   </span>
                   .
                 </p>
                 <button
-                  onClick={() => handleConfirmSelection(selectedOption)}
+                  onClick={() => handleConfirmSelection()}
                   className="w-full py-3 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
                 >
                   Confirm Selection
@@ -133,4 +164,6 @@ export default function SelectParkingSlot() {
       </div>
     </>
   );
-}
+};
+
+export default withLotAuth(SelectParkingSlot);

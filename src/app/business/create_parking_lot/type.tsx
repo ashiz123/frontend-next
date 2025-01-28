@@ -19,6 +19,9 @@ export type ParkingLotFormData = {
   max_height: number;
   grouped: boolean;
   vehicle_allow_type: string;
+  login_status: number;
+  login_pin: string;
+  confirm_login_pin: string;
 };
 
 export type FormError = {
@@ -49,4 +52,7 @@ export const InitialCreateParkingForm: ParkingLotFormData = {
   max_height: 0,
   grouped: false,
   vehicle_allow_type: "car",
+  login_status: 0,
+  login_pin: "",
+  confirm_login_pin: "",
 };

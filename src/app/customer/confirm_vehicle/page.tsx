@@ -3,23 +3,22 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import moment from "moment";
-
 import { VehicleDataInterface } from "@/app/customer/interfaces/VehicleDataInterface";
 import VehicleDetails from "@/app/customer/components/vehicleDetails";
 import { useVehicleContext } from "@/app/customer/VehicleContext/UseVehicleContext";
-import { fetchCheckVehicleStatus } from "./fetchVehicleStatus";
 import ErrorMessage from "@/app/customer/components/error";
+import withLotAuth from "@/app/parkingLots/hoc/withLotAuth";
+import { fetchReservation } from "../select_parking_zone/fetchReservation";
+import { lotsContextType } from "@/app/business/contexts/parkingLots/lotsContext";
+import { ParkingLot } from "@/app/types/parkingLot";
 
-export default function ConfirmVehicle() {
+const ConfirmVehicle = ({ lot }: { lot: any }) => {
   const router = useRouter();
-  const { vehicleData, setVehicleData } = useVehicleContext();
-  const [parking, setParking] = useState<boolean>(false);
+  const { vehicleData, setVehicleInfo, getParkingStatus } = useVehicleContext();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const formattedEntryTime = useMemo(
-    () => moment().format("YYYY-MM-DD HH:mm:ss"),
-    []
-  );
+  const registrationNumber = localStorage.getItem("vehicle_reg");
 
   //use Memo for better performance
   const vehicle: VehicleDataInterface = useMemo(
@@ -29,41 +28,39 @@ export default function ConfirmVehicle() {
       vehicle_year: vehicleData.vehicle_year,
       vehicle_color: vehicleData.vehicle_color,
       vehicle_type: vehicleData.vehicle_type,
-      entry_time: formattedEntryTime,
     }),
-    [vehicleData, formattedEntryTime]
+    [vehicleData]
   );
 
   useEffect(() => {
-    const getVehicleStatus = async (vehicle: VehicleDataInterface) => {
-      setLoading(true);
-      try {
-        const data = await fetchCheckVehicleStatus(vehicle);
-        const { vehicle_parking } = data;
-        setParking(!!vehicle_parking);
-        setVehicleData((prevData) => ({
-          ...prevData,
-          entry_time: vehicle.entry_time,
-        }));
-      } catch (error) {
-        console.log(error);
-        setError("Failed to fetch parking spots");
-      } finally {
-        setLoading(false);
+    if (registrationNumber) {
+      setVehicleInfo(registrationNumber);
+    }
+  }, [registrationNumber]);
+
+  const handleConfirm = async () => {
+    try {
+      if (registrationNumber) {
+        if (await getParkingStatus(registrationNumber)) {
+          router.push("/customer/parking_time");
+        } else {
+          //checking if lot sectioned or not. if sectioned go to select the section otherwise vehicle parked in lot.
+          if (lot.grouped === 1) {
+            router.push("/customer/select_parking_zone");
+            return;
+          }
+          const reservation = await fetchReservation(vehicle, lot.id);
+          if (reservation) {
+            console.log("Vehicle parked successfully");
+            router.push("/customer/thankyou_page");
+          }
+        }
       }
-    };
-
-    getVehicleStatus(vehicle);
-  }, [vehicle.vehicle_reg]);
-
-  console.log(loading);
-
-  function handleConfirm() {
-    const targetRoute = parking
-      ? "/customer/parking_time"
-      : "/customer/select_parking_zone";
-    router.push(targetRoute);
-  }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   return (
     <>
@@ -96,4 +93,6 @@ export default function ConfirmVehicle() {
       </div>
     </>
   );
-}
+};
+
+export default withLotAuth(ConfirmVehicle);

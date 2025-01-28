@@ -3,9 +3,9 @@ import axios from "axios";
 
 
 
-export const fetchCheckVehicleStatus = async(data: VehicleDataInterface) => {
+export const fetchCheckVehicleStatus = async(vehicleReg: string) => {
     try{
-        const response = await axios.get(`http://localhost:3000/api/v1/check_vehicle_status/${data.vehicle_reg}`, {
+        const response = await axios.get(`http://localhost:3000/api/v1/check_vehicle_status/${vehicleReg}`, {
             headers : {
               'Content-Type' : 'application/json'
             }

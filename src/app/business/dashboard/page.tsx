@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import withAuth from "@/app/hoc/withAuth";
+import withAuth from "@/app/business/hoc/withAuth";
 import { UserDataInterface } from "../contexts/user/UserDataInterface";
 import fetchParkingLots from "./fetchParkingLots";
 import { useLotsContext } from "../contexts/parkingLots/useLotsContext";

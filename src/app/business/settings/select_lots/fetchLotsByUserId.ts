@@ -8,10 +8,10 @@ const apiHeaders =  {
     }
 } 
 
-export const fetchLotsByUserId = async(userId : number) => {
+export const fetchLotsByAuthUser = async() => {
 
     try{
-        const response = await axiosClient.get(`${apiBaseUrl}/parking_lots/${userId}`, apiHeaders);
+        const response = await axiosClient.get(`${apiBaseUrl}/parking_lots_by_auth_user`, apiHeaders);
         if(response.status === 200){
             return response.data;
         }
@@ -20,7 +20,6 @@ export const fetchLotsByUserId = async(userId : number) => {
     catch(error){
         console.log(error);
         return error;
-
     }   
   
 }

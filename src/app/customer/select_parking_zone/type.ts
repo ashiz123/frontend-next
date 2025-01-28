@@ -39,7 +39,7 @@ export type LotInterface = {
 export type ParkingResult = {
     id : number;
     lot_id : number;
-    name : string;
+    section_name : string;
     type : string;
     total_spaces : number;
     occupied_spaces : number;

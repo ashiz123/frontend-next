@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { fetchLotsByUserId } from "./fetchLotsByUserId";
-import withAuth from "@/app/hoc/withAuth";
+import { fetchLotsByAuthUser } from "./fetchLotsByUserId";
 import { UserDataInterface } from "../../contexts/user/UserDataInterface";
 import { selectUserWithLot } from "./selectUserWithLot";
 
@@ -18,27 +17,24 @@ type lotType = {
   city: string;
 };
 
-const Page: React.FC<selectLotsProps> = ({ user }) => {
+const Page: React.FC<selectLotsProps> = () => {
   const [lots, setLots] = useState([]);
   const [selectedLot, setSelectedLot] = useState<number>();
   const [error, setError] = useState<string | null>();
 
   useEffect(() => {
     try {
-      const getLots = async (id: number) => {
-        const data = await fetchLotsByUserId(id);
+      const getLots = async () => {
+        const data = await fetchLotsByAuthUser();
         setLots(data);
       };
-      if (user) {
-        getLots(user.id);
-      } else {
-        throw new Error("No user found");
-      }
+
+      getLots();
     } catch (error) {
       console.log(error);
       setError(error);
     }
-  }, [user]);
+  }, []);
 
   function handleSelect(lot: lotType) {
     setSelectedLot(lot.id);
@@ -106,4 +102,4 @@ const Page: React.FC<selectLotsProps> = ({ user }) => {
   );
 };
 
-export default withAuth(Page);
+export default Page;

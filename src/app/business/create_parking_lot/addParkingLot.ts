@@ -4,7 +4,7 @@ import axiosClient from "../components/axiosClient";
 
 
 export const addParkingLot = async(user_id : number, parkingLot: ParkingLotFormData) => {
-    const{name, postcode, state, city,  latitude, longitude, total_spots, security_features, surface_types, max_height, grouped , vehicle_allow_type } = parkingLot;
+    const{name, postcode, state, city,  latitude, longitude, total_spots, security_features, surface_types, max_height, grouped , vehicle_allow_type, login_pin } = parkingLot;
     const data = {
       user_id,
       name,
@@ -18,7 +18,8 @@ export const addParkingLot = async(user_id : number, parkingLot: ParkingLotFormD
       surface_types,
       max_height,
       grouped,
-      vehicle_allow_type
+      vehicle_allow_type,
+      login_pin
     }
 
     const headers = {

@@ -1,14 +1,16 @@
 "use client";
-import withAuth from "@/app/business/hoc/withAuth";
-import { columns, RecordType } from "./columns";
-import { DataTable } from "./data-table";
-import { fetchParkingRecords } from "./fetchParkingRecords";
-import { UserDataInterface } from "../contexts/user/UserDataInterface";
+import { UserDataInterface } from "@/app/business/contexts/user/UserDataInterface";
+import withLotAuth from "../hoc/withLotAuth";
+import { columns, RecordType } from "@/app/business/records/columns";
+import { DataTable } from "@/app/business/records/data-table";
+import { fetchParkingRecords } from "@/app/business/records/fetchParkingRecords";
+
 import { useEffect, useState } from "react";
+import { ParkingLot } from "@/app/types/parkingLot";
 
 async function getData(auth_id: number): Promise<RecordType[]> {
   try {
-    const response = await fetchParkingRecords("user", auth_id);
+    const response = await fetchParkingRecords("lot", auth_id);
     return response;
   } catch (error) {
     console.error("Error fetching parking records:", error);
@@ -16,23 +18,25 @@ async function getData(auth_id: number): Promise<RecordType[]> {
   }
 }
 
-interface WithAuthProps {
-  user: UserDataInterface | null;
-}
-
-function Page({ user }: WithAuthProps) {
+const Page = ({
+  lot,
+  isAuthenticated,
+}: {
+  lot: ParkingLot;
+  isAuthenticated: boolean;
+}) => {
   const [data, setData] = useState<RecordType[]>([]);
 
   useEffect(() => {
-    if (user) {
+    if (lot) {
       const fetchData = async () => {
-        const result = await getData(user.id);
+        const result = await getData(lot.id);
         setData(result);
       };
 
       fetchData();
     }
-  }, [user]);
+  }, [lot, isAuthenticated]);
 
   const rows = data.map((row, index) => ({
     id: index + 1,
@@ -44,6 +48,6 @@ function Page({ user }: WithAuthProps) {
       <DataTable columns={columns} data={rows} />
     </main>
   );
-}
+};
 
-export default withAuth(Page);
+export default withLotAuth(Page);

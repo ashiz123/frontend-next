@@ -1,8 +1,8 @@
 // hoc/withAuth.tsx
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserDataInterface } from "../business/contexts/user/UserDataInterface";
-import { useUserContext } from "../business/contexts/user/userContext";
+import { UserDataInterface } from "../contexts/user/UserDataInterface";
+import { useUserContext } from "../contexts/user/userContext";
 import { usePathname } from "next/navigation";
 
 type WithAuthProps = {

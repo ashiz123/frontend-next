@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 export const fetchVehicleFromDvla = async(registrationNumber : string) => {
-
+    console.log(registrationNumber);
     try{
         const response = await axios.post('/api/v1/get_vehicle_reg', {registrationNumber} , {
             headers : {

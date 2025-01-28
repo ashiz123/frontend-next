@@ -7,7 +7,7 @@ import BusinessError from "../components/BusinessError";
 import { fetchUserLogin } from "./fetchUserLogin";
 import { useUserContext } from "../contexts/user/userContext";
 import { useRouter } from "next/navigation";
-import withGuest from "@/app/hoc/withGuest";
+import withGuest from "@/app/business/hoc/withGuest";
 import Link from "next/link";
 
 const Page = () => {
