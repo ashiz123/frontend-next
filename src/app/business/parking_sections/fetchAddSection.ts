@@ -18,9 +18,7 @@ export const fetchAddSection = async(data: sectionProps) => {
             { headers }
           );
       
-       if(response.status === 200){
-         return response.data;
-       }
+       return response;
       
       }
       catch(error){

@@ -29,7 +29,7 @@ const Navigation = ({ lot }: { lot: ParkingLot }) => {
                 Analytics & Reports
               </Link>
               <Link href="/contact" className="text-white hover:text-blue-200">
-                Help
+                Helpπ
               </Link>
             </div>
           )}

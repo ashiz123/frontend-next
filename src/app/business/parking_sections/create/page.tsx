@@ -45,7 +45,7 @@ export default function Page() {
       if (response?.status === 200) {
         setStatus({ submitted: true, error: false, disable: true });
         setFormData(initialSectionForm);
-        router.push(`/business/viewLot/${lotId}`);
+        router.push(`/parkingLots/dashboard`);
       }
     } catch (error) {
       console.log(error);

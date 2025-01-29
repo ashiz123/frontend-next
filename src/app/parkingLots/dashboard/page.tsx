@@ -20,6 +20,30 @@ const Dashboard = ({
             {lot.name} Details
           </h1>
 
+          <section className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+            <div className="bg-white p-4 rounded-lg shadow">
+              <h2 className="text-lg font-semibold">Activated Lot</h2>
+              <p className="text-3xl font-bold text-business mt-2">
+                {lot.name}
+              </p>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg shadow">
+              {/* add logo here */}
+              <h2 className="text-lg font-semibold">Total Spaces</h2>
+              <p className="text-3xl font-bold  mt-2 text-business">
+                {lot.total_spots}
+              </p>
+            </div>
+
+            <div className="bg-white p-4 rounded-lg shadow">
+              <h2 className="text-lg font-semibold">Available Spaces</h2>
+              <p className="text-3xl font-bold text-business mt-2">
+                {lot.total_spots - lot.occupied_spaces}
+              </p>
+            </div>
+          </section>
+
           {/* Address Section */}
           <section className="space-y-6">
             <h2 className="text-xl font-semibold text-gray-700">Address</h2>
