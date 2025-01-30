@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { ParkingLot } from "@/app/types/parkingLot";
 import AuthLotContext from "./authLotContext";
